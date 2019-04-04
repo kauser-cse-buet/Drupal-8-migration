@@ -1,0 +1,13 @@
+command for running migration command: 
+
+      migrate:status        List all migrations with current status.          
+      migrate:import        Perform one or more migration processes.          
+      migrate:rollback      Rollback one or more migrations.                  
+      migrate:stop          Stop an active migration operation.               
+      migrate:reset-status  Reset a active migration's status to idle.        
+      migrate:messages      View any messages associated with a migration.    
+      migrate:fields-source List the fields available for mapping in a so... 
+
+
+fin drush migrate:rollback demo_user_migration_5
+fin drush migrate:import demo_user_migration_5

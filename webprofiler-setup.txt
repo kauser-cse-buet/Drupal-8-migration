@@ -1,0 +1,57 @@
+Kauser, what I'm trying to do is find and remove any functions or processes that are chewing up memory and causing these massively slow page loads. 
+In your dev environment, pull the latest version of the repo, then run 
+
+fin start && fin cim 
+
+Enable the webprofiler module:
+
+fin drush pm-enable webprofiler
+
+On the Drupal admin toolbar, go to Configuration > Development > Configuration synchronization > Import. On that page, click the tab for "Single item".  For Configuration type, select Role. Then paste this and hit Import:
+
+uuid: 736cf731-a83c-49fa-847b-6d0c50c2efe1
+langcode: en
+status: true
+dependencies:
+  module:
+    - lightning_core
+    - unocustom
+third_party_settings:
+  unocustom:
+    role_type: individual
+  lightning_core:
+    description: 'WARNING: this role should only be used by site administrators in a dev environment. Never give this role to a user on Production.'
+id: debugging
+label: 'Debugging (ADMIN ONLY)'
+weight: 29
+is_admin: null
+permissions:
+  - 'access devel information'
+  - 'access kint'
+  - 'access webprofiler'
+  - 'execute php code'
+  - 'switch users'
+  - 'use text format free_for_all'
+  - 'use text format raw_html'
+  - 'use text format rich_text'
+  - 'view webprofiler toolbar'
+
+Create a test user with these settings:
+3: Content Approver
+4: Content Creator
+7: Webform Manager
+UNO GROUP: Extended Campus
+UNO GROUP: Graduate School
+Debugging (ADMIN ONLY)
+
+Home page: Graduate School
+
+In another browser session, log in with that user. You should see the Webprofiler toolbar at the bottom of the page.
+From the landing screen, click the blue tab. This is where a lot of lag happens. Once the page loads, look at the stats on the webprofiler toolbar. The number in the red bubble is how many db queries happened in this page load. It will be somewhere in the range of 4000. Click on the red bubble to open a list of all of the queries.
+Some of the SELECT queries are being repeated hundreds if not thousands of times. If you click on "INFO" you can see the values that are represented by placeholders in the query. If you hover over "Caller" you'll see the function that initiated the db query (but not a stack trace of what called that function.)
+
+What I suspect is happening is that either Chad or I wrote some functions early on in the site development, then we moved on to working on something else and didn't need that function anymore, but no one ever removed it. So I bet there are some functions that might be repeating over and over and they're not even being used. 
+
+If you make any pull requests, make sure you disable webprofiler before you export configs:
+
+fin drush pm-uninstall webprofiler && fin cex

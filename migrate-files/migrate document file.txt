@@ -1,0 +1,6 @@
+migrate document file: 
+
+
+https://www.drupal.org/docs/8/api/migrate-api/migrate-destination-plugins-examples/migrating-files-and-images
+
+- follow the documentation. 

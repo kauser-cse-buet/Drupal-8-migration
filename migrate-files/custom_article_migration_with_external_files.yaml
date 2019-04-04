@@ -1,0 +1,25 @@
+id: custom_article_migration_with_external_files-2
+label: 'Custom article migration with external files'
+source:
+  plugin: embedded_data
+  data_rows:
+    -
+      id: 1
+      title: 'COI-Guidance'
+      file: 'http://www.uno.edu/compliance/doucments/COI-Guidance.pdf'
+    -
+      id: 2
+      title: 'COI-Information-Digest'
+      file: 'http://www.uno.edu/compliance/doucments/COI-Information-Digest.pdf'
+  ids:
+    id:
+      type: integer
+process:
+  nid: id
+  title: title
+  field_attachment:
+    plugin: file_copy
+    source: file
+destination:
+  plugin: entity:node
+  default_bundle: article

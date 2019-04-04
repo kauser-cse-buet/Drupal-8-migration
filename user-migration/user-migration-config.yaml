@@ -1,0 +1,20 @@
+id: demo_user_migration_6
+migration_tags: null
+migration_group: null
+label: 'User migration from csv'
+source: 
+  plugin: csv
+  path: 'public://demousers_migrate.csv'
+  header_row_count: 1
+  keys:
+    - ID 
+process:
+  name: username
+  pass: password
+  roles: roles
+  status: status
+destination:
+  plugin: 'entity:user'
+migration_dependencies:
+  required: {}
+  optional: {}
